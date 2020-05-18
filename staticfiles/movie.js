@@ -121,34 +121,36 @@ window.addEventListener("DOMContentLoaded", (e) => { mainPage() })
 
 let k=1
 
-function top_rated_f() {
-    k=1;
-
-    document.getElementById("loadmore").addEventListener("click", loadTopRateds)
-    document.getElementById("cards").innerHTML = "";
-    fulfill_cards(top_rated, "cards")
-}
 
 function loadTopRateds(){
     k+=1;
     let url = "https://api.themoviedb.org/3/movie/top_rated?api_key=9240023865dd052e90b0564d9b5f6179&language=en-US&page="
-    fulfill_cards(url+String(k))  
+    fulfill_cards(url+String(k), "cards")
 
 }
 
-function latest_f() {
+function top_rated_f() {
     k=1;
-    document.getElementById("loadmore").addEventListener("click", loadTopRateds)
+
     document.getElementById("cards").innerHTML = "";
-    fulfill_cards(latest, "cards")
+    document.getElementById("loadmore").innerHTML = '<button class="btn btn-heart btn-block" onclick="loadTopRateds()">Load More</button>'
+    fulfill_cards(top_rated, "cards")
 }
 
 
 function loadLatest(){
     k+=1
     let url = "https://api.themoviedb.org/3/movie/upcoming?api_key=9240023865dd052e90b0564d9b5f6179&language=en-US&page="
-    fulfill_cards(url+String(k), "cards") 
+    fulfill_cards(url+String(k), "cards")
 }
+
+function latest_f() {
+    k=1;
+    document.getElementById("cards").innerHTML = "";
+    document.getElementById("loadmore").innerHTML = '<button class="btn btn-heart btn-block" onclick="loadLatest()">Load More</button>'
+    fulfill_cards(latest, "cards")
+}
+
 
 
 function populars_f() {
@@ -179,14 +181,14 @@ function mainPage() {
         <div id="cards">
 
         </div>
-        <div class="container">
-        <button id="loadmore" class="btn btn-heart btn-block" onclick="loadPopulars()">Load More</button>
+        <div id="loadmore" class="container">
         </div>
 
 `   
     let url = "https://api.themoviedb.org/3/movie/popular?api_key=9240023865dd052e90b0564d9b5f6179&language=en-US&page="
 
     document.getElementById("cards").innerHTML = "";
+    document.getElementById("loadmore").innerHTML = "<button class='btn btn-heart btn-block' onclick='loadPopulars()'>Load More</button>\n"
     fulfill_cards(url+String(1), "cards")
 }
 
