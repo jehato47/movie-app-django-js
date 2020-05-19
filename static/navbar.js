@@ -3,7 +3,6 @@ let search2 = "&page="
 let search3 = "&include_adult=false"
 
 
-
 document.getElementById("search_form").addEventListener("submit", (e) => {
     target = document.getElementById("search").value
     url = search + target + search2 + "1" + search3
