@@ -22,7 +22,7 @@ async function fulfill_cards(url,place) {
     let response2 = await response.text()
     let response3 = JSON.parse(response2)
     let films_list = response3.results
-    films_list.forEach((f, j) => {
+    films_list.forEach((f) => {
         fulfill_card(f, null, place)        
     })
     
@@ -31,7 +31,6 @@ async function fulfill_cards(url,place) {
 
 
 function fulfill_card(f, j, place) {
-
     if (j === null) {
         let url = `https://api.themoviedb.org/3/movie/${f.id}?api_key=9240023865dd052e90b0564d9b5f6179`
         f = url
@@ -46,7 +45,7 @@ function fulfill_card(f, j, place) {
             if (response.genres.length === 1) {
 
                 release_datee = response.release_date.split("-")[0]
-                let card = `<div class="movie_card" id="bright">
+                let card = `<div class="movie_card" id="bright" onclick="getCastAndDetails(${response.id});window.scrollTo(0, 0)">
                     <div class="info_section">
                         <div class="movie_header">
                             <img id="inner_image" class="locandina" src="${image_url + response.poster_path}" />
@@ -63,13 +62,7 @@ function fulfill_card(f, j, place) {
                                 ${response.overview}
                             </p>
                         </div>
-                        <div class="movie_social">
-                            <ul>
-                                <li><i class="material-icons">share</i></li>
-                                <li><i class="material-icons"></i></li>
-                                <li><i class="material-icons">chat_bubble</i></li>
-                            </ul>
-                        </div>
+                        
                     </div>
                     <div id="back" class="blur_back" style="background: url('${image_url + response.poster_path}')"></div>
                 </div>`
@@ -80,7 +73,7 @@ function fulfill_card(f, j, place) {
 
             else {
                 release_datee = response.release_date.split("-")[0]
-                let card = `<div class="movie_card" onclick="getCastAndDetails(${response.id})" id="bright">
+                let card = `<div class="movie_card" onclick="getCastAndDetails(${response.id});window.scrollTo(0, 0)" id="bright">
                 
                     <div class="info_section">
                         <div class="movie_header">
@@ -98,13 +91,7 @@ function fulfill_card(f, j, place) {
                                 ${response.overview}
                             </p>
                         </div>
-                        <div class="movie_social">
-                            <ul>
-                                <li><i class="material-icons">share</i></li>
-                                <li><i class="material-icons"></i></li>
-                                <li><i class="material-icons">chat_bubble</i></li>
-                            </ul>
-                        </div>
+                        
                     </div>
                     <div id="back" class="blur_back" style="background: url('${image_url + response.backdrop_path}')"></div>
                 </div>`
@@ -130,10 +117,22 @@ function loadTopRateds(){
 }
 
 function top_rated_f() {
+    
+    if(document.getElementById("secondary-div")!=null)
+    document.getElementById("secondary-div").innerHTML = `<div id="div-sort" class="mx-auto col-8 text-center ">
+    <h4 id="h4-sort" class="text-center">Sort by</h4>
+    <div>
+        <button id="btn-sort-1" onclick="populars_f()" class="btn-sort">most popular</button>
+        <button id="btn-sort-2" onclick="latest_f()" class="btn-sort">newest</button>
+        <button id="btn-sort-3" onclick="top_rated_f()" class="btn-sort">best rated</button>
+    </div>
+</div>
+    
+    <div id="cards"></div>
+    <button class="btn btn-heart btn-block" onclick="loadTopRateds()">Load More</button>`
+    
     k=1;
 
-    document.getElementById("cards").innerHTML = "";
-    document.getElementById("loadmore").innerHTML = '<button class="btn btn-heart btn-block" onclick="loadTopRateds()">Load More</button>'
     fulfill_cards(top_rated, "cards")
 }
 
@@ -145,19 +144,22 @@ function loadLatest(){
 }
 
 function latest_f() {
+    if(document.getElementById("secondary-div")!=null)
+    document.getElementById("secondary-div").innerHTML = `<div id="div-sort" class="mx-auto col-8 text-center ">
+    <h4 id="h4-sort" class="text-center">Sort by</h4>
+    <div>
+        <button id="btn-sort-1" onclick="populars_f()" class="btn-sort">most popular</button>
+        <button id="btn-sort-2" onclick="latest_f()" class="btn-sort">newest</button>
+        <button id="btn-sort-3" onclick="top_rated_f()" class="btn-sort">best rated</button>
+    </div>
+</div>
+    
+    <div id="cards"></div>
+    <button class="btn btn-heart btn-block" onclick="loadLatest()">Load More</button>`
     k=1;
-    document.getElementById("cards").innerHTML = "";
-    document.getElementById("loadmore").innerHTML = '<button class="btn btn-heart btn-block" onclick="loadLatest()">Load More</button>'
     fulfill_cards(latest, "cards")
 }
 
-
-
-function populars_f() {
-    k=1;
-    document.getElementById("cards").innerHTML = "";
-    fulfill_cards(populars_url, "cards")
-}
 
 function loadPopulars(){
     k+=1
@@ -165,6 +167,25 @@ function loadPopulars(){
     fulfill_cards(url+String(k), "cards") 
     
 }
+
+
+function populars_f() {
+    if(document.getElementById("secondary-div")!=null)
+    document.getElementById("secondary-div").innerHTML = `<div id="div-sort" class="mx-auto col-8 text-center ">
+    <h4 id="h4-sort" class="text-center">Sort by</h4>
+    <div>
+        <button id="btn-sort-1" onclick="populars_f()" class="btn-sort">most popular</button>
+        <button id="btn-sort-2" onclick="latest_f()" class="btn-sort">newest</button>
+        <button id="btn-sort-3" onclick="top_rated_f()" class="btn-sort">best rated</button>
+    </div>
+</div>
+    
+    <div id="cards"></div>`
+    k=1;
+    fulfill_cards(populars_url, "cards")
+}
+
+
 
 function mainPage() {
     k=1;
